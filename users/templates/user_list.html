@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orodha ya Watumiaji</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <h2 class="mb-4">Orodha ya Wanakijiji</h2>
+
+        <form method="get" class="mb-4">
+            <div class="row g-2 align-items-end">
+                <div class="col-md-3">
+                    <input type="text" name="q" class="form-control" placeholder="Tafuta jina, email, au simu..." value="{{ request.GET.q }}">
+                </div>
+
+                <div class="col-md-2">
+                    <select name="role" class="form-select">
+                        <option value="">Chagua Role</option>
+                        <option value="kiongozi" {% if request.GET.role == 'kiongozi' %}selected{% endif %}>Kiongozi</option>
+                        <option value="mwananchi" {% if request.GET.role == 'mwananchi' %}selected{% endif %}>Mwananchi</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <select name="gender" class="form-select">
+                        <option value="">Chagua Jinsia</option>
+                        <option value="male" {% if request.GET.gender == 'male' %}selected{% endif %}>Mwanaume</option>
+                        <option value="female" {% if request.GET.gender == 'female' %}selected{% endif %}>Mwanamke</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <select name="location" class="form-select">
+                        <option value="">Chagua Location</option>
+                        {% for loc in locations %}
+                            <option value="{{ loc }}" {% if request.GET.location == loc %}selected{% endif %}>{{ loc }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+
+                <div class="col-md-2">
+                    <a href="{% url 'export_users_csv' %}?q={{ request.GET.q }}&role={{ request.GET.role }}&gender={{ request.GET.gender }}&location={{ request.GET.location }}" class="btn btn-success w-100">Export CSV</a>
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>S/N</th>
+                    <th>Jina Kamili</th>
+                    <th>Email</th>
+                    <th>Location</th>
+                    <th>Tarehe ya Kuzaliwa</th>
+                    <th>Jinsia</th>
+                    <th>Simu</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.f_name }} {{ user.m_name }} {{ user.l_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.location }}</td>
+                    <td>{{ user.date_of_birth }}</td>
+                    <td>{{ user.gender }}</td>
+                    <td>{{ user.phone_no }}</td>
+                    <td>{{ user.role }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center">Hakuna watumiaji waliopatikana.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

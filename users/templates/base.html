@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Mfumo{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'upload_document' %}">Upload</a> |
+        <a href="{% url 'document_list' %}">Documents</a>
+    </nav>
+    <hr>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

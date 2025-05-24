@@ -1,0 +1,13 @@
+<h2>Chat na {{ other_user.f_name }}</h2>
+
+<div style="border:1px solid #ccc; height:300px; overflow:auto; padding:10px;">
+    {% for msg in messages %}
+        <p><strong>{{ msg.sender.f_name }}:</strong> {{ msg.message }} <br><small>{{ msg.timestamp }}</small></p>
+    {% endfor %}
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="message" placeholder="Andika ujumbe..." required style="width:80%;">
+    <button type="submit">Tuma</button>
+</form>

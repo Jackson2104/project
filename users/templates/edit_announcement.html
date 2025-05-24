@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hariri Tangazo</title>
+</head>
+<body>
+    <h2>Hariri Tangazo</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="background-color: blue; color: white;">Hifadhi Mabadiliko</button>
+    </form>
+    <a href="{% url 'kiongozi_page' %}">Rudi Nyumbani</a>
+</body>
+</html>

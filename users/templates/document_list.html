@@ -1,0 +1,16 @@
+
+{% extends "base.html" %}
+{% block content %}
+  <h2>Documents</h2>
+  <ul>
+    {% for document in documents %}
+      <li>
+        <strong>{{ document.title }}</strong> - 
+        <a href="{{ document.file.url }}">Download</a> 
+        (Uploaded by {{ document.uploaded_by.email }})
+      </li>
+    {% empty %}
+      <li>No documents uploaded yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

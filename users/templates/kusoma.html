@@ -1,0 +1,40 @@
+<!-- templates/welcome.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  
+</head>
+<body>
+       
+    <h2>Matangazo Mapya</h2>
+    {% for ann in announcements %}
+    <div style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;">
+        <h3>{{ ann.title }}</h3>
+        <p>{{ ann.content }}</p>
+
+        {% if ann.image %}
+            <img src="{{ ann.image.url }}" alt="Tangazo Image" style="max-width: 200px;">
+        {% endif %}
+        {% if ann.file %}
+            <p><a href="{{ ann.file.url }}">Pakua PDF</a></p>
+        {% endif %}
+
+        <small>Imepostiwa na: {{ ann.posted_by.f_name }} {{ ann.created_at }}</small>
+
+        <!-- Tuma link ya Edit na Delete kama ni mwenye post -->
+        {% if request.user == ann.posted_by %}
+            <div style="margin-top: 10px;">
+                <a href="{% url 'edit_announcement' ann.id %}">
+                    <button style="background: orange; color: white;">Hariri</button>
+                </a>
+                <a href="{% url 'delete_announcement' ann.id %}" onclick="return confirm('Una uhakika unataka kufuta?');">
+                    <button style="background: red; color: white;">Futa</button>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+{% endfor %}
+
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>
