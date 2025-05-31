@@ -1,0 +1,26 @@
+<!-- templates/mwananchi/base.html -->
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <title>Karibu Mwananchi</title>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <h1>Karibu kiongozi: {{ request.user.get_full_name }}</h1>
+        <nav>
+            <a href="{% url 'kiongozi_page' %}">Nyumbani</a> |
+            <a href="{% url 'kusoma' %}">Soma Tangazo</a> |
+            <a href="{% url 'logout' %}">Toka</a>
+        </nav>
+    </header>
+    <hr>
+    <main>
+        {% block content %}
+        {% endblock %}
+         {% block extra_script %}{% endblock %}
+    </main>
+   
+</body>
+</html>

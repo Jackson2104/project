@@ -161,7 +161,12 @@ def statistics_view(request):
     gender_counts = Counter(users.values_list('gender', flat=True))
     age_gender_data = get_age_gender_intervals(users)
 
-    return render(request, 'statistics.html', {
+    if request.user.role == 'kiongozi':
+        template_name = 'kiongozi/statistics.html'
+    else:
+        template_name = 'mwananchi/statistics.html'
+
+    return render(request, template_name, {
         'gender_data': dict(gender_counts),
         'age_gender_data': age_gender_data
     })
@@ -219,7 +224,13 @@ def welcome_view(request):
 @login_required
 def kusoma(request):
     announcements = Announcement.objects.all().order_by('-created_at')
-    return render(request, 'kusoma.html', {'announcements': announcements})
+
+    if request.user.role == 'kiongozi':
+        template_name = 'kiongozi/kusoma.html'
+    else:
+        template_name = 'mwananchi/kusoma.html'
+
+    return render(request, template_name, {'announcements': announcements})
 
 @login_required
 @user_passes_test(lambda u: u.role == 'kiongozi')

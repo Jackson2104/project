@@ -1,0 +1,18 @@
+<!-- templates/mwananchi/kusoma.html -->
+{% extends "mwananchi/base.html" %}
+
+{% block content %}
+<h2>Matangazo ya Mwananchi</h2>
+
+{% for ann in announcements %}
+    <div>
+        <h3>{{ ann.title }}</h3>
+        <p>{{ ann.content }}</p>
+        <small>Tarehe: {{ ann.created_at }}</small>
+    </div>
+    <hr>
+{% empty %}
+    <p>Hakuna matangazo kwa sasa.</p>
+{% endfor %}
+
+{% endblock %}

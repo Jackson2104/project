@@ -1,9 +1,8 @@
-{% extends "base_layout.html" %}
+{% extends "kiongozi/base.html" %}
 
-{% block title %}Takwimu za Wanakijiji{% endblock %}
+{% block title %}Takwimu za Wanakijiji - Kiongozi{% endblock %}
 
 {% block extra_head %}
-<!-- Chart.js and plugin for datalabels -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 <style>
@@ -11,7 +10,6 @@
         max-width: 400px;
         max-height: 400px;
     }
-
     #ageGenderChart {
         max-width: 500px;
     }
@@ -20,15 +18,13 @@
 
 {% block content %}
 <div class="container mt-5 pt-3">
-    <h2 class="text-center mb-4 text-primary">Takwimu za Wanakijiji</h2>
+    <h2 class="text-center mb-4 text-primary">Takwimu za Wanakijiji (Kiongozi)</h2>
 
-    <!-- Buttons -->
     <div class="d-flex flex-column align-items-center mb-4">
         <button class="btn btn-outline-primary mb-2 w-50" onclick="toggleGraph('genderChartContainer')">JINSIA</button>
         <button class="btn btn-outline-secondary mb-2 w-50" onclick="toggleGraph('ageGenderChartContainer')">UMRI KWA JINSIA</button>
     </div>
 
-    <!-- Gender Chart -->
     <div id="genderChartContainer" class="card p-3 mb-4 d-none">
         <h4 class="text-center text-success">Kwa Jinsia</h4>
         <div class="d-flex justify-content-center">
@@ -36,7 +32,6 @@
         </div>
     </div>
 
-    <!-- Age+Gender Chart -->
     <div id="ageGenderChartContainer" class="card p-3 mb-4 d-none">
         <h4 class="text-center text-success">Kwa Umri na Jinsia</h4>
         <div class="d-flex justify-content-center">
