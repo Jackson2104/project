@@ -2,13 +2,17 @@
 {% extends "kiongozi/base.html" %}
 
 {% block content %}
-<h2>Matangazo ya Kiongozi</h2>
+<h2>Matangazo</h2>
 
 {% for ann in announcements %}
     <div>
         <h3>{{ ann.title }}</h3>
         <p>{{ ann.content }}</p>
         <small>Tarehe: {{ ann.created_at }}</small>
+        <div>
+            <a href="{% url 'edit_announcement' ann.id %}">Hariri</a> |
+            <a href="{% url 'delete_announcement' ann.id %}">Futa</a>
+        </div>
     </div>
     <hr>
 {% empty %}

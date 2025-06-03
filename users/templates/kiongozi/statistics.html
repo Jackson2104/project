@@ -1,6 +1,6 @@
 {% extends "kiongozi/base.html" %}
 
-{% block title %}Takwimu za Wanakijiji - Kiongozi{% endblock %}
+{% block title %}Takwimu za Wanakijiji {% endblock %}
 
 {% block extra_head %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -21,8 +21,8 @@
     <h2 class="text-center mb-4 text-primary">Takwimu za Wanakijiji (Kiongozi)</h2>
 
     <div class="d-flex flex-column align-items-center mb-4">
-        <button class="btn btn-outline-primary mb-2 w-50" onclick="toggleGraph('genderChartContainer')">JINSIA</button>
-        <button class="btn btn-outline-secondary mb-2 w-50" onclick="toggleGraph('ageGenderChartContainer')">UMRI KWA JINSIA</button>
+        <button class="btn btn-outline-primary mb-2 w-50" onclick="toggleGraph('gender')">JINSIA</button>
+        <button class="btn btn-outline-secondary mb-2 w-50" onclick="toggleGraph('ageGender')">UMRI KWA JINSIA</button>
     </div>
 
     <div id="genderChartContainer" class="card p-3 mb-4 d-none">
@@ -45,15 +45,21 @@
 <script>
     const genderData = {{ gender_data|safe }};
     const ageGenderData = {{ age_gender_data|safe }};
-    let genderChartInstance, ageGenderChartInstance;
 
-    function toggleGraph(id) {
-        const container = document.getElementById(id);
-        container.classList.toggle('d-none');
+    let genderChartInstance = null;
+    let ageGenderChartInstance = null;
 
-        if (!container.classList.contains('d-none')) {
-            if (id === "genderChartContainer" && !genderChartInstance) {
-                const ctx = document.getElementById('genderChart').getContext('2d');
+    function toggleGraph(type) {
+        const genderContainer = document.getElementById("genderChartContainer");
+        const ageGenderContainer = document.getElementById("ageGenderChartContainer");
+
+        if (type === "gender") {
+            const isVisible = !genderContainer.classList.contains("d-none");
+            genderContainer.classList.toggle("d-none");
+            ageGenderContainer.classList.add("d-none");
+
+            if (!isVisible && !genderChartInstance) {
+                const ctx = document.getElementById("genderChart").getContext("2d");
                 const labels = Object.keys(genderData);
                 const dataValues = Object.values(genderData);
                 const total = dataValues.reduce((a, b) => a + b, 0);
@@ -79,26 +85,27 @@
                             },
                             datalabels: {
                                 color: '#fff',
-                                font: {
-                                    weight: 'bold',
-                                    size: 14
-                                },
-                                formatter: (value) => {
-                                    const percentage = ((value / total) * 100).toFixed(1);
-                                    return `${value} (${percentage}%)`;
-                                }
+                                font: { weight: 'bold', size: 14 },
+                                formatter: value => `${value} (${((value / total) * 100).toFixed(1)}%)`
                             }
                         }
                     },
                     plugins: [ChartDataLabels]
                 });
             }
+        }
 
-            if (id === "ageGenderChartContainer" && !ageGenderChartInstance) {
+        if (type === "ageGender") {
+            const isVisible = !ageGenderContainer.classList.contains("d-none");
+            ageGenderContainer.classList.toggle("d-none");
+            genderContainer.classList.add("d-none");
+
+            if (!isVisible && !ageGenderChartInstance) {
+                const ctx = document.getElementById("ageGenderChart").getContext("2d");
                 const labels = Object.keys(ageGenderData);
                 const maleData = labels.map(label => ageGenderData[label].male || 0);
                 const femaleData = labels.map(label => ageGenderData[label].female || 0);
-                const ctx = document.getElementById('ageGenderChart').getContext('2d');
+
                 ageGenderChartInstance = new Chart(ctx, {
                     type: 'bar',
                     data: {
@@ -110,7 +117,9 @@
                     },
                     options: {
                         responsive: true,
-                        scales: { y: { beginAtZero: true } }
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
                     }
                 });
             }

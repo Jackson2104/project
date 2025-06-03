@@ -1,5 +1,5 @@
 
-{% extends "base.html" %}
+{% extends "base_original.html" %}
 {% block content %}
   <h2>Upload Document</h2>
   <form method="post" enctype="multipart/form-data">
@@ -7,4 +7,5 @@
     {{ form.as_p }}
     <button type="submit">Upload</button>
   </form>
+  <nav>  <a href="{% url 'document_list' %}">Documents</a></nav>
 {% endblock %}
