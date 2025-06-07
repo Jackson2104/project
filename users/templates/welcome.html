@@ -106,8 +106,13 @@
   
 
   <!-- Sidebar -->
-  <div id="sidebar" class="p-3">
+    <div id="sidebar" class="p-3">
     <ul class="nav flex-column">
+      <li class="nav-item mt-2">
+        <a class="nav-link" href="{% url 'welcome' %}">
+          <i class="bi bi-speedometer2 me-2"></i> Dashboard
+        </a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'kusoma' %}"><i class="bi bi-megaphone-fill me-2"></i> Matangazo</a>
       </li>
