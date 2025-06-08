@@ -1,31 +1,38 @@
+# views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages as django_messages
+from django.http import HttpResponseForbidden
 from .models import Message
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
 
 @login_required
-def chat_users(request):
-    users = User.objects.exclude(id=request.user.id)
-    return render(request, 'chat/chat_users.html', {'users': users})
+def delete_message(request, message_id):
+    msg = Message.objects.get(id=message_id)
+
+    if request.user.role != 'kiongozi':
+        return HttpResponseForbidden("Huna ruhusa ya kufuta ujumbe huu.")
+
+    msg.delete()
+    django_messages.success(request, "Ujumbe umefutwa.")
+    return redirect('chat_room')
 
 @login_required
-def chat_view(request, user_id):
-    other_user = User.objects.get(id=user_id)
-    messages = Message.objects.filter(
-        sender__in=[request.user, other_user],
-        receiver__in=[request.user, other_user]
-    ).order_by('timestamp')
+def chat_room(request):
+    chat_messages = Message.objects.all().order_by('timestamp')
 
     if request.method == 'POST':
         msg = request.POST.get('message')
         if msg:
-            Message.objects.create(sender=request.user, receiver=other_user, message=msg)
-            return redirect('chat_view', user_id=other_user.id)
+            Message.objects.create(sender=request.user, message=msg)
+            return redirect('chat_room')
 
-    return render(request, 'chat/chat_room.html', {
-        'messages': messages,
-        'other_user': other_user
+    # 👇 Chagua template sahihi kulingana na role
+    if request.user.role == 'kiongozi':
+        template_name = 'kiongozi/chat_room.html'
+    else:
+        template_name = 'mwananchi/chat_room.html'
+
+    return render(request, template_name, {
+        'chat_messages': chat_messages
     })
 
